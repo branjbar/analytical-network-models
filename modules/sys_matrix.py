@@ -54,8 +54,8 @@ def get_node_to_link_mapping(N):
 
     node_dict = {}
     link_id = 0
-    for i in xrange(1,N):
-        for j in xrange(0,i):
+    for i in xrange(1, N):
+        for j in xrange(0, i):
             node_dict[i] = node_dict.get(i,[]) + [link_id]
             node_dict[j] = node_dict.get(j,[]) + [link_id]
             link_id += 1

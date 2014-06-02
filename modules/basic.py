@@ -32,3 +32,21 @@ def print_matrix_print(M, indent=1):
             print item, '\t' * indent,
         print "|\n",
 
+
+def get_distribution(x, b=100):
+    """
+    x: list of non-negative numbers
+    b: bin size
+    return: (k,Pk) where Pk shows the probability of a number between k and k + b
+    """
+
+    Pk = {}
+    m = max(x) / float(b)
+    for k in xrange(b):
+        Pk[k * m] = sum([i >= k * m for i in x]) / float(len(x))
+
+    return Pk
+
+
+if __name__ == "__main__":
+    pass
