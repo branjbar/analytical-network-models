@@ -8,23 +8,20 @@ def get_node_dynamic(i=1):
     :return: a set of rows corresponding to edges of node i
     """
     if i == 1:
-        print "Err: node 1 doesn't have any corresponding row!"
-        return []
-
-    if i == 2:
+        print "Err: node 0 doesn't have any corresponding row!"
         return [[]]
 
-    if i == 3:
-        return [[1],
-                [1]]
+    if i == 2:
+        return [[1]]
 
-    if i > 3:
+
+    if i > 2:
         a_i_1 = get_node_dynamic(i-1)
         for index, row in enumerate(a_i_1):
             M = [0 for j in xrange(index)] + [1] + [0 for j in xrange(i-index-3)]
             a_i_1[index] += M
 
-        a_i_1.append([0 for j in xrange(((i-2) * (i-3) / 2))] + [1 for j in xrange(i-2)])
+        a_i_1.append([0 for j in xrange(((i-2) * (i-3) / 2)+1)] + [1 for j in xrange(i-2)])
 
         return a_i_1
 
@@ -37,11 +34,11 @@ def get_graph_dynamic(N=6):
 
     L = N * (N-1) / 2  # number of edges
     A = []
-    for n in xrange(2, N+1):
+    for n in xrange(1, N+1):
         for index, row in enumerate(get_node_dynamic(n)):
-            new_row = row + [0 for j in xrange(index)] + [-2 * (n-2)] + [0 for j in xrange(L - (n-2) * (n-1) / 2 - index - 1)]
+            new_row = row + [0 for j in xrange(index)] + [- (2 * n - 3)] + [0 for j in xrange(L - (n-2) * (n-1) / 2 - index - 1)]
             A.append(new_row)
-
+    A[0][0] = 0
     return A
 
 
@@ -59,6 +56,7 @@ def get_node_to_link_mapping(N):
             node_dict[i] = node_dict.get(i,[]) + [link_id]
             node_dict[j] = node_dict.get(j,[]) + [link_id]
             link_id += 1
+    print node_dict
     return node_dict
 
 
@@ -85,7 +83,8 @@ def get_link_ss(A, x_0=1):
     return link_ss_dict
 
 
-
+if __name__ == "__main__":
+    print get_node_dynamic(3)
 
 
 

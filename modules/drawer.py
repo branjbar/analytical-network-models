@@ -43,15 +43,15 @@ def draw_deg_dist(Pk, Pk2=None):
     Pk: the distribution for degree k
     """
     PL.cla()
-    y = basic.get_distribution(Pk,10000)
+    y = basic.get_distribution(Pk)
     PL.loglog(y.keys(), y.values(), '.k')
     if Pk2:
         PL.hold(True)
-        y = basic.get_distribution(Pk2,10000)
-        PL.loglog(y.keys(), y.values(),'.r')
+        y = basic.get_distribution(Pk2)
+        PL.loglog(y.keys(), y.values(), '.r')
 
     PL.loglog([1,10],[1,.01],'k')
-    PL.loglog([.001,.1],[1,0.01],'r')
+    PL.loglog([.2,20],[1,0.01],'r')
     PL.title('Degree Distribution')
     PL.xlabel('k')
     PL.ylabel('Pc(k)')
@@ -60,7 +60,7 @@ def draw_deg_dist(Pk, Pk2=None):
 
 def draw_graph(nodes_degree, edges_weight):
     """
-    draws and also exports a graph according to the nodes size and edges weight that are provided
+    draws and also exports a graph according to the nodes size and edges weight tzhat are provided
     nodes_degree: list of nodes degree
     edges_weight: list of edges degree
     """

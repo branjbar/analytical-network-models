@@ -39,8 +39,8 @@ def get_graph_dynamic(N=6):
     A = []
     for n in xrange(2, N+1):
         for index, row in enumerate(get_node_dynamic(n)):
-            new_row = row + [0 for j in xrange(index)] + [-.1 * (n-2)] \
-                      + [0 for j in xrange(L - (n-2) * (n-1) / 2 - index - 1)]
+            new_row = row + [0 for j in xrange(index)] + [-4 * (n-2)] \
+                          + [0 for j in xrange(L - (n-2) * (n-1) / 2 - index - 1)]
             A.append(new_row)
 
     return A

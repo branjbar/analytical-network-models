@@ -26,14 +26,15 @@ def print_matrix_print(M, indent=1):
     """
     prints a pretty tree from a stored in a mixed dictionary and list
     """
+    print '['
     for row in M:
         print '|', '\t' * indent,
         for item in row:
-            print item, '\t' * indent,
+            print "%.3f"%item, '\t' * indent,
         print "|\n",
+    print ']'
 
-
-def get_distribution(x, b=100):
+def get_distribution(x, b=1000):
     """
     x: list of non-negative numbers
     b: bin size
