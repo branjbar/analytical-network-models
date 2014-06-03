@@ -44,14 +44,14 @@ def draw_deg_dist(Pk, Pk2=None):
     """
     PL.cla()
     y = basic.get_distribution(Pk)
-    PL.loglog(y.keys(), y.values(), '.k')
+    PL.loglog(y.keys(), y.values(), '.r')
     if Pk2:
         PL.hold(True)
         y = basic.get_distribution(Pk2)
-        PL.loglog(y.keys(), y.values(), '.r')
+        PL.loglog(y.keys(), y.values(), '.k')
 
-    PL.loglog([1,10],[1,.01],'k')
-    PL.loglog([.2,20],[1,0.01],'r')
+    PL.loglog([1,10],[1,.01],'r')
+    PL.loglog([.01,1],[1,0.01],'r')
     PL.title('Degree Distribution')
     PL.xlabel('k')
     PL.ylabel('Pc(k)')
@@ -69,24 +69,24 @@ def draw_graph(nodes_degree, edges_weight):
     G = nx.Graph()  # define an empty graph
 
     # add edges
-    link_id = 0
+    link_id = 1
     for i in xrange(1,N):
         for j in xrange(0,i):
-            G.add_edge(i, j, weight=edges_weight[link_id])
+            if edges_weight[link_id] > .01:
+                G.add_edge(i, j, weight=edges_weight[link_id])
             link_id += 1
 
-    node_size = [n * 50 for n in nodes_degree]  # set nodes size
+    node_size = [n * 100 for n in nodes_degree]  # set nodes size
     edges_weight, weights = zip(*nx.get_edge_attributes(G,'weight').items())  # set edges size
     pos = nx.spring_layout(G)  # set position
-
     # draw the graph
     nx.draw(G, pos, node_color='#A0CBE2',
             edgelist=edges_weight, edge_color=weights, width=4,
-            edge_cmap=PL.cm.Reds, with_labels=False,
+            edge_cmap=PL.cm.Reds, with_labels=True,
             node_size=node_size)
 
-    PL.savefig("../data/graphs/text_graph_%d.png"%N) # save as png
-    nx.write_gml(G,"../data/graphs/test_graph_%d.gml"%N)
+    PL.savefig("../data/graphs/text_graph_%d.png" % N) # save as png
+    nx.write_gml(G,"../data/graphs/test_graph_%d.gml" % N)
 
 
-    # PL.show() # display
+    PL.show() # display

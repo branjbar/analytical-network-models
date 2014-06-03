@@ -49,5 +49,30 @@ def get_distribution(x, b=1000):
     return Pk
 
 
+def matrix_product(X,Y):
+    """
+    x: M x L list
+    y: L x N list
+    result: matrix produce of x*y
+    """
+    M = len(X)
+    N = len(Y[0])
+
+    Lx = len(X[0])
+    Ly = len(Y)
+    if Lx != Ly:
+        print "Err: matrix dimensions miss mach! a %dx%d matrix times %dx%d" % (M, Lx, Ly, N)
+        return 0
+
+    result = [[0 for j in xrange(N)] for j in xrange(M)]
+
+    # iterate through rows of X
+    for i in xrange(M):
+       # iterate through columns of Y
+       for j in xrange(N):
+           # iterate through rows of Y
+           for k in xrange(Ly):
+               result[i][j] += X[i][k] * Y[k][j]
+    return result
 if __name__ == "__main__":
     pass
