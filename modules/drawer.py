@@ -32,10 +32,29 @@ def draw_y(y):
     y: dict in form of {x0:y0, x1:y1, x2:y2, ..., xn:yn}
     """
     PL.cla()
-    PL.plot(y.keys(), y.keys(), '.')
+    PL.plot(y.keys(), y.values(), '-')
     PL.xlabel('x')
     PL.ylabel('y')
+    PL.ylim([0,1])
     PL.show()
+
+def draw_trajectory(trajectory, file_name=None):
+    """
+    plots the graph y
+    y: dict in form of {x0:y0, x1:y1, x2:y2, ..., xn:yn}
+    """
+    PL.cla()
+    for y in trajectory:
+        PL.plot(y, '-')
+    PL.xlabel('x')
+    PL.ylabel('y')
+    PL.ylim([0,1])
+    if not file_name:
+        PL.show()
+    else:
+        PL.savefig("../data/figs/" + file_name ) # save as png
+
+
 
 
 def draw_deg_dist(Pk, Pk2=None):
@@ -90,3 +109,12 @@ def draw_graph(nodes_degree, edges_weight):
 
 
     PL.show() # display
+
+
+def visualize_graph(graph):
+    """
+    quickly visualizes a graph
+    :return:
+    """
+    nx.draw(graph)
+    PL.show()
