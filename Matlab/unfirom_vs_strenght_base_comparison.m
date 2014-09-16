@@ -1,49 +1,67 @@
 %% This code provides a quick overview of cumulative 
 %% degree distributions of both "uniform performance" and "strength-based performance" methods. 
 
-close all
+%close all
 clear all
 clc
 
 deg1 = [];  % degree for uniform prefrence
 deg2 = [];  % degree for strenght-based prefrence
-N = 100000;
-
+N = 10000;
 
 %% uniform prefrence
 for i = 1: N
     deg1(i) = 1;
-    for j = i : N
-        deg1(i) = deg1(i) + 1 / i;
+    for j = i : N-1
+        deg1(i) = deg1(i) + 1 / j;
     end
 end
 
 %% strenght-based prefrence
 for i = 1: N
     deg2(i) = 1;
-    for j = i+2 : N+1
+    for j = i+1 : N+1
         deg2(i) = deg2(i) * (2*j - 4) / (2*j-5);
     end
 end
         
 %% computing the cumulative distribution
-[y1, x1]= hist(deg1,100000);
-y1 = cumsum(y1(end:-1:1));
-y1 = y1(end:-1:1);
+[y1, x1]= hist(deg1,10);
+y1c = cumsum(y1(end:-1:1));
+y1c = y1c(end:-1:1);
 
-[y2, x2]= hist(deg2,100000);
-y2 = cumsum(y2(end:-1:1));
-y2 = y2(end:-1:1);
+[y2, x2]= hist(deg2,380);
+y2c = cumsum(y2(end:-1:1));
+y2c = y2c(end:-1:1);
 
-%% plotting
-
-loglog(x1,y1,'k.')
+% plotting
+%close all
+figure(1)
+hold off
+semilogy(x1,y1,'ko')
 hold on
-loglog(x2,y2,'r*')
-legend('uniform preference','strength-based prefrence')
+semilogy(x1,y1c,'r*')
+xx = [0:.1:10];
+semilogy(xx,(N+1)* 2.72 * exp(-(xx)),'-','linewidth', 2)
+%semilogy(xx, (N+1)* 2.7 * exp(-(xx)),':','linewidth', 2)
+ylim([1,10^4])
+legend('DF','CCDF','y=2.72(N+1)e^{-x}','y=0.3Ne^{-x}')
+xlabel('degree')
+ylabel('freq.')
+xlim([1,10])
+%
+figure(2)
+loglog(x2,y2,'ko')
+hold on
+loglog(x2,y2c,'r*')
+xx = [1:.1:100];
+loglog(xx,(N-1)*xx.^-2,'-','linewidth', 2)
+loglog(xx,(N-1)*xx.^-3,':','linewidth', 2)
+ylim([1,10^4])
+legend('DF','CCDF','y=(N-1)x^{-2}','y=(N-1)x^{-3}')
 xlabel('degree (log-scale)')
-ylabel('cumulative frequency (log-scale)')
-xlim([1,10^5])
+ylabel('freq.')
+xlim([1,10^2])
 
 
 
