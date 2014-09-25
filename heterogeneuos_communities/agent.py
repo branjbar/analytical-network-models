@@ -11,11 +11,12 @@ class Agent:
     fitness = None  # agent fitness in [-infinity, +infinity]
     history = []  # agent history is a dictionary of dictionary in form of [{'x':x, 'fitness':fitness, 'time':time}]
 
-    def __init__(self, agent_id, type=None, x=None, fitness=None):
+    def __init__(self, agent_id, agent_type=None, x=None, fitness=None):
         self.id = agent_id
-        self.type = type
+        self.type = agent_type
         self.x = x
         self.fitness = fitness
+        self.history = [{'time': 0, 'x':self.x}]
 
     def __str__(self):
         return 'A_%s) %s: x=%s, F=%s' % (self.id, self.type, self.x, self.fitness)
