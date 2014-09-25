@@ -9,6 +9,7 @@ deg1 = [];  % degree for uniform prefrence
 deg2 = [];  % degree for strenght-based prefrence
 N = 10000;
 
+
 %% uniform prefrence
 for i = 1: N
     deg1(i) = 1;
@@ -26,34 +27,35 @@ for i = 1: N
 end
         
 %% computing the cumulative distribution
-[y1, x1]= hist(deg1,10);
+[y1, x1]= hist(deg1,90);
 y1c = cumsum(y1(end:-1:1));
 y1c = y1c(end:-1:1);
 
-[y2, x2]= hist(deg2,380);
+[y2, x2]= hist(deg2,350);
 y2c = cumsum(y2(end:-1:1));
 y2c = y2c(end:-1:1);
 
-% plotting
-%close all
+%% plotting
+close all
 figure(1)
 hold off
 semilogy(x1,y1,'ko')
 hold on
-semilogy(x1,y1c,'r*')
+semilogy(x1,y1c,'r.')
 xx = [0:.1:10];
-semilogy(xx,(N+1)* 2.72 * exp(-(xx)),'-','linewidth', 2)
-%semilogy(xx, (N+1)* 2.7 * exp(-(xx)),':','linewidth', 2)
+semilogy(xx,N*2.7*exp(-xx),'-','linewidth', 2)
+semilogy(xx,N*.3*exp(-xx),':','linewidth', 2)
 ylim([1,10^4])
-legend('DF','CCDF','y=2.72(N+1)e^{-x}','y=0.3Ne^{-x}')
+legend('DF','CCDF','y=2.7Ne^{-x}','y=0.3Ne^{-x}')
 xlabel('degree')
 ylabel('freq.')
 xlim([1,10])
-%
+%%
+
 figure(2)
 loglog(x2,y2,'ko')
 hold on
-loglog(x2,y2c,'r*')
+loglog(x2,y2c,'r.')
 xx = [1:.1:100];
 loglog(xx,(N-1)*xx.^-2,'-','linewidth', 2)
 loglog(xx,(N-1)*xx.^-3,':','linewidth', 2)
@@ -62,6 +64,8 @@ legend('DF','CCDF','y=(N-1)x^{-2}','y=(N-1)x^{-3}')
 xlabel('degree (log-scale)')
 ylabel('freq.')
 xlim([1,10^2])
+
+
 
 
 
