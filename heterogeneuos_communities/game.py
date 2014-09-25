@@ -7,7 +7,7 @@ class Game:
 
     benefit = .4
     cost = .1
-    delta_t = .01
+    delta_t = .1
     time = None
     agents = []
 
