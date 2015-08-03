@@ -3,9 +3,9 @@ compat_modeling
 
 This package includes various codes developed for modeling and analysis of complex patterns in social networks.
 
-# Contributions
+## Contributions
 
-# List of Modules
+## List of Modules
 
-# Instructions to use
+## Instructions to use
 
