@@ -7,5 +7,8 @@ This package includes various codes developed for modeling and analysis of compl
 
 ## List of Modules
 
+### hierarchical_nets
+This implements the hierarchical network model proposed by B. Ranjbar-Sahraei et al. in "on the Skewed Degree Distribution of Hierarchical Networks", ASONAM 2015.
+
 ## Instructions to use
 
