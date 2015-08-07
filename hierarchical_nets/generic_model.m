@@ -1,36 +1,35 @@
-%%Generic Model: I have a generic model for constructing hierarchical
-%%models. First, an arbitrary hierarchy structury is chosen, and then the
-%%update rules are generated. Based on update rules the edge weights are
-%%evolved and the evolution is demonstrated in real time.
+%% Generic ModelA
+% A generic model for constructing hierarchical models. First, an arbitrary hierarchy structury is chosen, and then the
+% update rules are generated. Based on update rules the edge weights are
+% evolved and the evolution is demonstrated in real time.
 
 %% initialization
 clear all
-figure(2)
-hold off
+close all
 clc
-n = 100;  % number of nodes
+n = 16;  % number of nodes
 Time = 100;  % number of iterations
 deltaT = .1;  % time steps
 
 %% Define the Hierarchy relations by using a binary n x n matrix
 % the element [i,j] of H is 1 if i is superior to j.
-%H = tril(ones(n,n),-1); % ASONAM model
+H = tril(ones(n,n),-1); % ASONAM model
 % H(1,1) = 1;
 % H = [ones(n,1),[zeros(1,n-1); rand(n-1,n-1)>.7]];  % a very random network
 
 
 % A --> MODULE1 --> MODULE2
-    n = 2 * floor(n/2) + 1;
-    module = tril(ones((n-1)/2,(n-1)/2),-1);
-    H = [zeros(n,1),[zeros(1,n-1) ; [module, 0 * module ; 0 * module, module]]];
-    H(1,1) = 1;
-
-    H(2,1) = 1;
-    H(3,1) = 1;
-
-    H((n-1)/2+2,(n-1)/2+1) = 1;
-    H((n-1)/2+2,(n-1)/2) = 1;
-    H((n-1)/2+3,(n-1)/2) = 1;
+%     n = 2 * floor(n/2) + 1;
+%     module = tril(ones((n-1)/2,(n-1)/2),-1);
+%     H = [zeros(n,1),[zeros(1,n-1) ; [module, 0 * module ; 0 * module, module]]];
+%     H(1,1) = 1;
+% 
+%     H(2,1) = 1;
+%     H(3,1) = 1;
+% 
+%     H((n-1)/2+2,(n-1)/2+1) = 1;
+%     H((n-1)/2+2,(n-1)/2) = 1;
+%     H((n-1)/2+3,(n-1)/2) = 1;
 
 %% Initialize the weights
 W = zeros(n,n);
@@ -40,7 +39,6 @@ W(1,1) = 1;
 %% Construct the Psi and dW update rules and evolve the network
 
 for t = 1 : Time
-    t
     dW = zeros(n,n);
     Psi = zeros(n,n);
     for i = 1 : n
@@ -74,7 +72,7 @@ for t = 1 : Time
     
     
     subplot(211)
-    loglog(ccdf_x, ccdf_hist,'-o'); lsline
+    loglog(ccdf_x, ccdf_hist,'-o')
     hold off
 
     subplot(212)
@@ -86,7 +84,7 @@ end
 
 %% Final Visualization
 subplot(211)
-loglog(ccdf_x, ccdf_hist,'-o'); lsline
+loglog(ccdf_x, ccdf_hist,'-o')
 hold on
 plot(ccdf_x, n * ccdf_x.^(-2),':')  % approximation of power law
 plot(ccdf_x, n * ccdf_x.^(-1),'-.')  % approximation of power law
