@@ -2,10 +2,11 @@
 % A generic model for constructing hierarchical models. First, an arbitrary hierarchy structury is chosen, and then the
 % update rules are generated. Based on update rules the edge weights are
 % evolved and the evolution is demonstrated in real time.
+% Link to datasets: http://moreno.ss.uci.edu/data.html
 
 %% initialization
 clear all
-close all
+figure
 clc
 n = 16;  % number of nodes
 Time = 100;  % number of iterations
@@ -31,6 +32,8 @@ H = tril(ones(n,n),-1); % ASONAM model
 %     H((n-1)/2+2,(n-1)/2) = 1;
 %     H((n-1)/2+3,(n-1)/2) = 1;
 
+
+%load('WolfH')
 %% Initialize the weights
 W = zeros(n,n);
 W(1,1) = 1;
@@ -69,27 +72,53 @@ for t = 1 : Time
     df_hist = hist(sum(W,2),ccdf_x);
     ccdf_hist = cumsum(df_hist(end:-1:1));
     ccdf_hist = ccdf_hist(end:-1:1);  % computing the cummulative degree distribution
-    
-    
-    subplot(211)
-    loglog(ccdf_x, ccdf_hist,'-o')
-    hold off
-
-    subplot(212)
-    plot(1:n,sum(W,2),'o')
-    
-    pause(.1)
+%     
+%     
+%     subplot(211)
+%     loglog(ccdf_x, ccdf_hist,'-o')
+%     hold off
+% 
+%     subplot(212)
+%     plot(1:n,sum(W,2),'o')
+%     
+%     pause(.1)
 
 end
 
-%% Final Visualization
-subplot(211)
+
+
+% %% Final Visualization
+% subplot(211)
+% loglog(ccdf_x, ccdf_hist,'-o')
+% hold on
+% loglog(ccdf_x, n * ccdf_x.^(-2),':')  % approximation of power law
+% loglog(ccdf_x, n * ccdf_x.^(-1),'-.')  % approximation of power law
+% legend('real system', 'power law \alpha=-3','power law \alpha=-2')
+% 
+% 
+% 
+
+%% Final Visulaizaiton
+ccdf_x = 1:.1:max(sum(W,2));  % the partitions of the x-axis
+df_hist = hist(sum(W,2),ccdf_x);
+ccdf_hist = cumsum(df_hist(end:-1:1));
+ccdf_hist = ccdf_hist(end:-1:1);  % computing the cummulative degree distribution
+subplot(221)
+semilogy(ccdf_x, ccdf_hist,'-o')
+hold on
+semilogy(ccdf_x, exp(-ccdf_x),':')  % approximation of power law
+semilogy(ccdf_x, exp(5-ccdf_x),'-.')  % approximation of power law
+
+
+subplot(222)
 loglog(ccdf_x, ccdf_hist,'-o')
 hold on
-plot(ccdf_x, n * ccdf_x.^(-2),':')  % approximation of power law
-plot(ccdf_x, n * ccdf_x.^(-1),'-.')  % approximation of power law
-legend('real system', 'power law \alpha=-3','power law \alpha=-2')
+loglog(ccdf_x, n * ccdf_x.^(-2),':')  % approximation of power law
+loglog(ccdf_x, n * ccdf_x.^(-1),'-.')  % approximation of power law
 
 
-
-
+subplot(212)
+plot(ccdf_x,ccdf_hist,'o')
+hold on
+plot(ccdf_x,n * ccdf_x.^(-2),'*')
+plot(ccdf_x,0.3*16*exp(-ccdf_x),'.')
