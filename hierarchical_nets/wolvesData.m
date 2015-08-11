@@ -1,7 +1,7 @@
 %% VALIDATING THE WOLF DATASET
 %%
 % Source: <http://www.mathworks.com http://moreno.ss.uci.edu/wolf.dat>
-
+close all
 data = [   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
           16   0   2   0   1   1   0   1   0   0   0   0   0   0   0   0
            0   4   0   4   1   0   0   1   0   0   0   0   0   0   0   0
@@ -31,6 +31,7 @@ data_normalized = data ./ (sum(data,2) * ones(1,n)) ;
 H = data_normalized>0;
 
 W = data_normalized + data_normalized';
+W(1,1) =1;
 
 %% plotting online the degree distribution
 ccdf_x = 1:.1:max(sum(W,2));  % the partitions of the x-axis
@@ -42,6 +43,7 @@ semilogy(ccdf_x, ccdf_hist,'-o')
 hold on
 semilogy(ccdf_x, exp(-ccdf_x),':')  % approximation of power law
 semilogy(ccdf_x, exp(5-ccdf_x),'-.')  % approximation of power law
+legend('wolves','exponent','exponent - 5')
 
 
 subplot(222)
@@ -49,6 +51,7 @@ loglog(ccdf_x, ccdf_hist,'-o')
 hold on
 loglog(ccdf_x, n * ccdf_x.^(-2),':')  % approximation of power law
 loglog(ccdf_x, n * ccdf_x.^(-1),'-.')  % approximation of power law
+legend('wolves','power law,2','power law,3')
 
 
 subplot(212)
@@ -56,3 +59,17 @@ plot(ccdf_x,ccdf_hist,'o')
 hold on
 plot(ccdf_x,n * ccdf_x.^(-2),'*')
 plot(ccdf_x,0.3*16*exp(-ccdf_x),'.')
+legend('wolves','power law','exponential')
+
+
+%%
+figure
+Wg = genericModel(H);
+
+edges = tril(W,-1);
+edgesG = tril(Wg,-1);
+
+plot(edges(:),edgesG(:),'o'); lsline
+xlabel('real')
+ylabel('prediction')
+
