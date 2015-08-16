@@ -1,5 +1,5 @@
 %% VALIDATING THE MONKEYS DATASET (Dominance-based Attachment Model)
-%
+% Bijan Ranjbar-Sahraei
 % 
 % <<monkeys.jpg>>
 % 
