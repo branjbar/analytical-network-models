@@ -1,5 +1,5 @@
 %% VALIDATING THE WINDSURFURS DATASET (Prestige-based Attachment Model) (to be checked)
-% 
+% Bijan Ranjbar-Sahraei
 % 
 % <<windsurfurs.jpg>>
 % 
