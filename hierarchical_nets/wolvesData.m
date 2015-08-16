@@ -1,6 +1,14 @@
 %% VALIDATING THE WOLF DATASET
-%%
+% 
+% <<wolf.jpg>>
+% 
+% The number in a cell represents the number of occasions on which the row 
+% wolf was seen to exhibit a "low posture" display directed toward the 
+% column wolf. 
+%
 % Source: <http://www.mathworks.com http://moreno.ss.uci.edu/wolf.dat>
+
+%% Original Data
 close all
 data = [   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
           16   0   2   0   1   1   0   1   0   0   0   0   0   0   0   0
@@ -19,8 +27,8 @@ data = [   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0   0
          201   0  49  56  23  82  21  49   7  53 177  84  34   7   0   3
           29 136  41  24   1  26  78   3  42   6  46  23  12   0   7   0];
 
-%%
-figure
+%% Preprocessing 
+% Preprocessing on data to make it lower triangular and normalized.
 clc
 n = size(data,1);
 
@@ -33,12 +41,15 @@ H = data_normalized>0;
 W = data_normalized + data_normalized';
 W(1,1) =1;
 
-%% plotting online the degree distribution
+%% Degree Distribution
+% Here we compare the degree distribution with exponential and power law
+% distributions.
+
 ccdf_x = 1:.1:max(sum(W,2));  % the partitions of the x-axis
 df_hist = hist(sum(W,2),ccdf_x);
 ccdf_hist = cumsum(df_hist(end:-1:1));
 ccdf_hist = ccdf_hist(end:-1:1);  % computing the cummulative degree distribution
-subplot(221)
+subplot(121)
 semilogy(ccdf_x, ccdf_hist,'-o')
 hold on
 semilogy(ccdf_x, exp(-ccdf_x),':')  % approximation of power law
@@ -46,7 +57,7 @@ semilogy(ccdf_x, exp(5-ccdf_x),'-.')  % approximation of power law
 legend('wolves','exponent','exponent - 5')
 
 
-subplot(222)
+subplot(122)
 loglog(ccdf_x, ccdf_hist,'-o')
 hold on
 loglog(ccdf_x, n * ccdf_x.^(-2),':')  % approximation of power law
@@ -54,22 +65,35 @@ loglog(ccdf_x, n * ccdf_x.^(-1),'-.')  % approximation of power law
 legend('wolves','power law,2','power law,3')
 
 
-subplot(212)
+
+%% Strength Distribution Predictions
+% Using the hierarchy network, we generate the PA model and compare the
+% predicted strength distributions and real distribution.
+Wg = genericModel(H);
+
+ccdf_x_g = 1:.1:max(sum(Wg,2));  % the partitions of the x-axis
+df_hist_g = hist(sum(Wg,2),ccdf_x_g);
+ccdf_hist_g = cumsum(df_hist_g(end:-1:1));
+ccdf_hist_g = ccdf_hist_g(end:-1:1);  % computing the cummulative degree distribution
+
+
+figure
 plot(ccdf_x,ccdf_hist,'o')
 hold on
-plot(ccdf_x,n * ccdf_x.^(-2),'*')
-plot(ccdf_x,0.3*16*exp(-ccdf_x),'.')
-legend('wolves','power law','exponential')
+plot(ccdf_x_g,ccdf_hist_g,'*')
+legend('Real-World Data','PA predictions')
 
-
-%%
-figure
-Wg = genericModel(H);
+%% Edge Comparison
+% In the previous section we showed the predictions of strength
+% distributions. In this section, we compare the single weights with each
+% other.
 
 edges = tril(W,-1);
 edgesG = tril(Wg,-1);
 
+
+figure
 plot(edges(:),edgesG(:),'o'); lsline
-xlabel('real')
-ylabel('prediction')
+xlabel('real edge weights')
+ylabel('predicted edge weights')
 
