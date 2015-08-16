@@ -1,4 +1,4 @@
-%% VALIDATING THE WOLF DATASET
+%% VALIDATING THE WOLF DATASET (Prestige-based Attachment Model)
 % 
 % <<wolf.jpg>>
 % 
@@ -69,7 +69,7 @@ legend('wolves','power law,2','power law,3')
 %% Strength Distribution Predictions
 % Using the hierarchy network, we generate the PA model and compare the
 % predicted strength distributions and real distribution.
-Wg = genericModel(H);
+Wg = genericModel(H,'PA');
 
 ccdf_x_g = 1:.1:max(sum(Wg,2));  % the partitions of the x-axis
 df_hist_g = hist(sum(Wg,2),ccdf_x_g);

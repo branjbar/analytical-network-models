@@ -1,13 +1,20 @@
-function Wg= genericModel(H)
+function Wg= genericModel(H, model)
 %% Generic ModelA
 % A generic model for constructing hierarchical models. First, an arbitrary hierarchy structury is chosen, and then the
 % update rules are generated. Based on update rules the edge weights are
 % evolved and the evolution is demonstrated in real time.
 % Link to datasets: http://moreno.ss.uci.edu/data.html
 
+% model can be Dominance-based Attachment (DA) or Prestige-based Attachment (PA).  
 if nargin == 0
    H = tril(ones(n,n),-1); % ASONAM model
+   model = 'PA';
 end
+
+if nargin == 1
+    model = 'PA';
+end
+
 
 %% initialization
 n = size(H,1);  % number of nodes
@@ -53,7 +60,11 @@ deltaT = .1;  % time steps
                     for k = 1 : n
                         if (k < i) || H(i,k) == 1  % the latter is for H(1,1)=1
 %                         if H(i,k) == 1  % if i is superior to k
-                            Psi(i,j) = Psi(i,j) + Wg(j,k);
+                            if strcmp(model,'PA')
+                                Psi(i,j) = Psi(i,j) + Wg(j,k);
+                            else
+                                Psi(i,j) = Psi(i,j) + 1;
+                            end
                         end
                     end
                 end
