@@ -1,5 +1,5 @@
 %% VALIDATING THE KANGAROO DATASET (Prestige-based Attachment Model)
-% 
+% Bijan Ranjbar-Sahraei
 %
 % <<kangaroo.jpg>>
 %
