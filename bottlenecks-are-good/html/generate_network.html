@@ -1,0 +1,204 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>generate_network</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-08-17"><meta name="DC.source" content="generate_network.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="keyword">function</span> [W, hubs] = generate_network(n, GRAPH_TYPE)
+<span class="comment">%GENERATE_NETWORK generates a connected random network</span>
+<span class="comment">% W = generate_network(n, graph_type) returns the adjacency matrix of a</span>
+<span class="comment">% GRAPH_TYPE random graph with n nodes.</span>
+<span class="comment">%</span>
+<span class="comment">% GRAPH_TYPE: is the type of graph Erdos?Renyi, Scale-Free or Small-World</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">% Example:</span>
+<span class="comment">%            W = generate_network(20, 'Erdos?Renyi')</span>
+<span class="comment">%            returns a random graph with 20 nodes.</span>
+
+
+    W_connected = false;  <span class="comment">% to make sure generated graphs are connected</span>
+
+    <span class="keyword">switch</span> GRAPH_TYPE
+        <span class="keyword">case</span> <span class="string">'Erdos-Renyi'</span>
+            p = 2 * log(n)/n; <span class="comment">% wiring probablity</span>
+<span class="comment">%             p = 4/(n-1); %  n(n-1)p/2 =  4n</span>
+            <span class="keyword">while</span> (~W_connected)
+                W = generateRandom( n, p );
+                W_connected = true; <span class="comment">%isConnected( W );</span>
+                <span class="keyword">if</span> ~W_connected
+                    <span class="comment">%fprintf('the Erdos-Renyi graph should be regenerated\n')</span>
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+
+        <span class="keyword">case</span> <span class="string">'Scale-Free'</span>
+            m0 = [ 0, 1, 1; 1, 0, 1; 1, 1, 0 ]; <span class="comment">% initial nodes for scale free network</span>
+            m = 2; <span class="comment">% number of added connections in each iteration</span>
+            <span class="keyword">while</span> ~W_connected
+                W = generateScaleFree( n, m0, m );
+                W_connected = true; <span class="comment">%isConnected( W );</span>
+                <span class="keyword">if</span> ~W_connected
+                    fprintf(<span class="string">'the Scale-Free graph should be regenerated\n'</span>)
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+<span class="comment">%             W = randmio_und(W,200); % here we randomize the network while preserving the degree distribution</span>
+
+        <span class="keyword">case</span> <span class="string">'Small-World'</span>
+            k = 4;  <span class="comment">% mean degree</span>
+            beta = .3;  <span class="comment">% rewiring probablity</span>
+            <span class="keyword">while</span> ~W_connected
+                W = generateSmallWorld( n, k, beta );
+                W_connected = true; <span class="comment">%isConnected( W );</span>
+                <span class="keyword">if</span> ~W_connected
+                    fprintf(<span class="string">'the Small-World graph should be regenerated\n'</span>)
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+            <span class="comment">%W = randmio_und(W,200);</span>
+        <span class="keyword">case</span> <span class="string">'Random'</span>
+            k = 4;  <span class="comment">% mean degree</span>
+            beta = 1;  <span class="comment">% rewiring probablity</span>
+            W = generateSmallWorld( n, k, beta );
+
+        <span class="keyword">case</span> <span class="string">'Regular'</span>
+            d = 4;
+            W = generateRegular(n,d);
+    <span class="keyword">end</span>
+    <span class="comment">% here we extract the top 5 degree nodes as hubs</span>
+    degree = sum(W,2);
+    [~,I] = sort(degree, <span class="string">'descend'</span>);
+    hubs = I(1:5);
+<span class="keyword">end</span>
+</pre><pre class="codeoutput error">Error using generate_network (line 16)
+Not enough input arguments.
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+function [W, hubs] = generate_network(n, GRAPH_TYPE)
+%GENERATE_NETWORK generates a connected random network
+% W = generate_network(n, graph_type) returns the adjacency matrix of a
+% GRAPH_TYPE random graph with n nodes.
+%
+% GRAPH_TYPE: is the type of graph Erdos?Renyi, Scale-Free or Small-World
+%
+%
+% Example:
+%            W = generate_network(20, 'Erdos?Renyi')
+%            returns a random graph with 20 nodes.
+
+
+    W_connected = false;  % to make sure generated graphs are connected
+    
+    switch GRAPH_TYPE
+        case 'Erdos-Renyi'
+            p = 2 * log(n)/n; % wiring probablity
+%             p = 4/(n-1); %  n(n-1)p/2 =  4n
+            while (~W_connected)
+                W = generateRandom( n, p );
+                W_connected = true; %isConnected( W );
+                if ~W_connected
+                    %fprintf('the Erdos-Renyi graph should be regenerated\n')
+                end
+            end
+            
+        case 'Scale-Free'
+            m0 = [ 0, 1, 1; 1, 0, 1; 1, 1, 0 ]; % initial nodes for scale free network
+            m = 2; % number of added connections in each iteration
+            while ~W_connected
+                W = generateScaleFree( n, m0, m );
+                W_connected = true; %isConnected( W );
+                if ~W_connected
+                    fprintf('the Scale-Free graph should be regenerated\n')
+                end
+            end
+%             W = randmio_und(W,200); % here we randomize the network while preserving the degree distribution 
+
+        case 'Small-World'
+            k = 4;  % mean degree 
+            beta = .3;  % rewiring probablity
+            while ~W_connected
+                W = generateSmallWorld( n, k, beta );
+                W_connected = true; %isConnected( W );
+                if ~W_connected
+                    fprintf('the Small-World graph should be regenerated\n')
+                end
+            end
+            %W = randmio_und(W,200);
+        case 'Random'
+            k = 4;  % mean degree 
+            beta = 1;  % rewiring probablity
+            W = generateSmallWorld( n, k, beta );
+
+        case 'Regular'
+            d = 4;
+            W = generateRegular(n,d);
+    end
+    % here we extract the top 5 degree nodes as hubs
+    degree = sum(W,2);
+    [~,I] = sort(degree, 'descend');
+    hubs = I(1:5);
+end
+
+ 
+##### SOURCE END #####
+--></body></html>
