@@ -3,7 +3,7 @@ function [W, hubs] = generate_network(n, GRAPH_TYPE)
 % W = generate_network(n, graph_type) returns the adjacency matrix of a
 % GRAPH_TYPE random graph with n nodes.
 %
-% GRAPH_TYPE: is the type of graph Erdos?Renyi, Scale-Free or Small-World
+% GRAPH_TYPE: is the type of graph Erdos-Renyi, Scale-Free or Small-World
 %
 %
 % Example:

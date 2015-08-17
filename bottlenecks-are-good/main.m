@@ -12,7 +12,7 @@ clear all
 clc
 
 %% Initialization
-K = 50;  % number of experiments for each configuration
+K = 4;  % number of experiments for each configuration
 n_min = 50;  % size of networks are from n_min to 10*n_min
 
 GRAPH_TYPES = { 'Scale-Free' 'Small-World' 'Random' };  % type of graph from ['Erdos-Renyi', 'Scale-Free', 'Small-World']
@@ -24,10 +24,10 @@ folder_name = ['gephi/gephi_' num2str(ceil(rand*10000))];
 mkdir(folder_name) 
 
 for g = 1 : 3  % for each type of network
-    for n_iter = 1 : 10    % for each node size
+    for n_iter = 1 : 3    % for each node size
         n = n_min * n_iter;
 
-        for group_size_iter = 1 : 10    % for node size
+        for group_size_iter = 1 : 2    % for node size
              fprintf('graph_type = %d , #nodes = %d , group_size = %d\n', g, n, group_size_iter * 2)
     
             group_size = floor(group_size_iter * .02 * n);  % the group size

@@ -1,5 +1,5 @@
 function nbrs = get_influencers(W,nodei,d)
-%%GET_NEIGHBORS finds all the neighbors in form of nodej influences nodei after d steps   
+%%GET_INFLUENCERS finds all the neighbors in form of nodej influences nodei after d steps   
 % w is the adjacency matrix
 % nodei is the the node we're looking for it's influencers
 % d is the depth of influencers
@@ -17,3 +17,5 @@ x0(nodei) = 1;
 
 
 nbrs = logical((W')^d*x0);
+
+end
