@@ -51,7 +51,7 @@ semilogy(ccdf_x, ccdf_hist,'-o')
 hold on
 semilogy(ccdf_x, exp(-ccdf_x),':')  % approximation of power law
 semilogy(ccdf_x, exp(5-ccdf_x),'-.')  % approximation of power law
-legend('wolves','exponent','exponent - 5')
+legend('data','exponent','exponent - 5')
 
 
 subplot(122)
@@ -59,7 +59,7 @@ loglog(ccdf_x, ccdf_hist,'-o')
 hold on
 loglog(ccdf_x, n * ccdf_x.^(-2),':')  % approximation of power law
 loglog(ccdf_x, n * ccdf_x.^(-1),'-.')  % approximation of power law
-legend('wolves','power law,2','power law,3')
+legend('data','power law,2','power law,3')
 
 
 
