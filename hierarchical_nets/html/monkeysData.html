@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>VALIDATING THE MONKEYS DATASET (Dominance-based Attachment Model)</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-08-16"><meta name="DC.source" content="monkeysData.m"><style type="text/css">
+      --><title>VALIDATING THE MONKEYS DATASET (Dominance-based Attachment Model)</title><meta name="generator" content="MATLAB 8.5"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-08-31"><meta name="DC.source" content="monkeysData.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>VALIDATING THE MONKEYS DATASET (Dominance-based Attachment Model)</h1><!--introduction--><p><img vspace="5" hspace="5" src="monkeys.jpg" alt=""> </p><p>The monkeys were assigned to "troops". The "co-observations" of collections of individuals are reported.</p><p>Source: <a href="http://moreno.ss.uci.edu/data.html#howler">http://moreno.ss.uci.edu/data.html#howler</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Importing Data</a></li><li><a href="#2">Preprocessing</a></li><li><a href="#5">Degree Distribution</a></li><li><a href="#6">Strength Distribution Predictions</a></li><li><a href="#7">Edge Comparison</a></li></ul></div><h2>Importing Data<a name="1"></a></h2><pre class="codeinput">clear <span class="string">all</span>
+  </style></head><body><div class="content"><h1>VALIDATING THE MONKEYS DATASET (Dominance-based Attachment Model)</h1><!--introduction--><p>Bijan Ranjbar-Sahraei</p><p><img vspace="5" hspace="5" src="monkeys.jpg" alt=""> </p><p>The monkeys were assigned to "troops". The "co-observations" of collections of individuals are reported.</p><p>Source: <a href="http://moreno.ss.uci.edu/data.html#howler">http://moreno.ss.uci.edu/data.html#howler</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Importing Data</a></li><li><a href="#2">Preprocessing</a></li><li><a href="#5">Degree Distribution</a></li><li><a href="#6">Strength Distribution Predictions</a></li><li><a href="#7">Edge Comparison</a></li></ul></div><h2>Importing Data<a name="1"></a></h2><pre class="codeinput">clear <span class="string">all</span>
 load <span class="string">monkeys_data.mat</span>
 </pre><h2>Preprocessing<a name="2"></a></h2><p>Preprocessing the data to make it lower triangular and normalized.</p><pre class="codeinput">n = size(data,1);
 data_tril = tril(data,-1);
@@ -93,7 +93,7 @@ semilogy(ccdf_x, ccdf_hist,<span class="string">'-o'</span>)
 hold <span class="string">on</span>
 semilogy(ccdf_x, exp(-ccdf_x),<span class="string">':'</span>)  <span class="comment">% approximation of power law</span>
 semilogy(ccdf_x, exp(5-ccdf_x),<span class="string">'-.'</span>)  <span class="comment">% approximation of power law</span>
-legend(<span class="string">'wolves'</span>,<span class="string">'exponent'</span>,<span class="string">'exponent - 5'</span>)
+legend(<span class="string">'data'</span>,<span class="string">'exponent'</span>,<span class="string">'exponent - 5'</span>)
 
 
 subplot(122)
@@ -101,7 +101,7 @@ loglog(ccdf_x, ccdf_hist,<span class="string">'-o'</span>)
 hold <span class="string">on</span>
 loglog(ccdf_x, n * ccdf_x.^(-2),<span class="string">':'</span>)  <span class="comment">% approximation of power law</span>
 loglog(ccdf_x, n * ccdf_x.^(-1),<span class="string">'-.'</span>)  <span class="comment">% approximation of power law</span>
-legend(<span class="string">'wolves'</span>,<span class="string">'power law,2'</span>,<span class="string">'power law,3'</span>)
+legend(<span class="string">'data'</span>,<span class="string">'power law,2'</span>,<span class="string">'power law,3'</span>)
 </pre><img vspace="5" hspace="5" src="monkeysData_01.png" alt=""> <h2>Strength Distribution Predictions<a name="6"></a></h2><p>Using the hierarchy network, we generate the PA model and compare the predicted strength distributions and real distribution.</p><pre class="codeinput">Wg = genericModel(H,<span class="string">'DA'</span>);
 
 ccdf_x_g = 1:.1:max(sum(Wg,2));  <span class="comment">% the partitions of the x-axis</span>
@@ -123,10 +123,10 @@ figure
 plot(edges(:),edgesG(:),<span class="string">'o'</span>); lsline
 xlabel(<span class="string">'real edge weights'</span>)
 ylabel(<span class="string">'predicted edge weights'</span>)
-</pre><img vspace="5" hspace="5" src="monkeysData_03.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="monkeysData_03.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2015a</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% VALIDATING THE MONKEYS DATASET (Dominance-based Attachment Model)
-%
+% Bijan Ranjbar-Sahraei
 % 
 % <<monkeys.jpg>>
 % 
@@ -178,7 +178,7 @@ semilogy(ccdf_x, ccdf_hist,'-o')
 hold on
 semilogy(ccdf_x, exp(-ccdf_x),':')  % approximation of power law
 semilogy(ccdf_x, exp(5-ccdf_x),'-.')  % approximation of power law
-legend('wolves','exponent','exponent - 5')
+legend('data','exponent','exponent - 5')
 
 
 subplot(122)
@@ -186,7 +186,7 @@ loglog(ccdf_x, ccdf_hist,'-o')
 hold on
 loglog(ccdf_x, n * ccdf_x.^(-2),':')  % approximation of power law
 loglog(ccdf_x, n * ccdf_x.^(-1),'-.')  % approximation of power law
-legend('wolves','power law,2','power law,3')
+legend('data','power law,2','power law,3')
 
 
 
