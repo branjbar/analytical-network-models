@@ -77,11 +77,18 @@ ccdf_hist_g = cumsum(df_hist_g(end:-1:1));
 ccdf_hist_g = ccdf_hist_g(end:-1:1);  % computing the cummulative degree distribution
 
 
-figure
-plot(ccdf_x,ccdf_hist,'o')
+figure('OuterPosition', [400 400 250 250])
+
+loglog(ccdf_x,ccdf_hist,'o')
 hold on
-plot(ccdf_x_g,ccdf_hist_g,'*')
-legend('Real-World Data','PA predictions')
+loglog(ccdf_x_g,ccdf_hist_g,'*')
+legend('Real-World Data','PBA predictions')
+
+xlabel('node strength')
+ylabel('frequency')
+
+set(gcf,'PaperPositionMode','auto'); print('figs/wolves_distribution','-depsc','-tiff')
+
 
 %% Edge Comparison
 % In the previous section we showed the predictions of strength
@@ -92,8 +99,11 @@ edges = tril(W,-1);
 edgesG = tril(Wg,-1);
 
 
-figure
-plot(edges(:),edgesG(:),'o'); lsline
-xlabel('real edge weights')
-ylabel('predicted edge weights')
 
+figure('OuterPosition', [400 400 250 250])
+
+plot(edges(:),edgesG(:),'o'); lsline
+xlabel('edge weights')
+ylabel('estimate edge weights')
+
+set(gcf,'PaperPositionMode','auto'); print('figs/wolves_regression','-depsc','-tiff')

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>VALIDATING THE KANGAROO DATASET (Prestige-based Attachment Model)</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-08-16"><meta name="DC.source" content="kangarooData.m"><style type="text/css">
+      --><title>VALIDATING THE KANGAROO DATASET (Prestige-based Attachment Model)</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-09-02"><meta name="DC.source" content="kangarooData.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>VALIDATING THE KANGAROO DATASET (Prestige-based Attachment Model)</h1><!--introduction--><p><img vspace="5" hspace="5" src="kangaroo.jpg" alt=""> </p><p>frequencies of observed physical proximities among a collection of 17 free-ranging grey kangaroos. Observations were made in the Nadgee Nature Reserve in New South Wales.</p><p>Source: <a href="http://moreno.ss.uci.edu/data.html#kangaroo">http://moreno.ss.uci.edu/data.html#kangaroo</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Importing Data</a></li><li><a href="#2">Preprocessing</a></li><li><a href="#5">Degree Distribution</a></li><li><a href="#6">Strength Distribution Predictions</a></li><li><a href="#7">Edge Comparison</a></li></ul></div><h2>Importing Data<a name="1"></a></h2><pre class="codeinput">clear <span class="string">all</span>
+  </style></head><body><div class="content"><h1>VALIDATING THE KANGAROO DATASET (Prestige-based Attachment Model)</h1><!--introduction--><p>Bijan Ranjbar-Sahraei</p><p><img vspace="5" hspace="5" src="kangaroo.jpg" alt=""> </p><p>frequencies of observed physical proximities among a collection of 17 free-ranging grey kangaroos. Observations were made in the Nadgee Nature Reserve in New South Wales.</p><p>Source: <a href="http://moreno.ss.uci.edu/data.html#kangaroo">http://moreno.ss.uci.edu/data.html#kangaroo</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Importing Data</a></li><li><a href="#2">Preprocessing</a></li><li><a href="#5">Degree Distribution</a></li><li><a href="#6">Strength Distribution Predictions</a></li><li><a href="#7">Edge Comparison</a></li></ul></div><h2>Importing Data<a name="1"></a></h2><pre class="codeinput">clear <span class="string">all</span>
 load <span class="string">kangaroo_data.mat</span>
 </pre><h2>Preprocessing<a name="2"></a></h2><p>Preprocessing the data to make it lower triangular and normalized.</p><pre class="codeinput">n = size(data,1);
 data_tril = tril(data,-1);
@@ -93,7 +93,7 @@ semilogy(ccdf_x, ccdf_hist,<span class="string">'-o'</span>)
 hold <span class="string">on</span>
 semilogy(ccdf_x, exp(-ccdf_x),<span class="string">':'</span>)  <span class="comment">% approximation of power law</span>
 semilogy(ccdf_x, exp(5-ccdf_x),<span class="string">'-.'</span>)  <span class="comment">% approximation of power law</span>
-legend(<span class="string">'wolves'</span>,<span class="string">'exponent'</span>,<span class="string">'exponent - 5'</span>)
+legend(<span class="string">'data'</span>,<span class="string">'exponent'</span>,<span class="string">'exponent - 5'</span>)
 
 
 subplot(122)
@@ -101,7 +101,7 @@ loglog(ccdf_x, ccdf_hist,<span class="string">'-o'</span>)
 hold <span class="string">on</span>
 loglog(ccdf_x, n * ccdf_x.^(-2),<span class="string">':'</span>)  <span class="comment">% approximation of power law</span>
 loglog(ccdf_x, n * ccdf_x.^(-1),<span class="string">'-.'</span>)  <span class="comment">% approximation of power law</span>
-legend(<span class="string">'wolves'</span>,<span class="string">'power law,2'</span>,<span class="string">'power law,3'</span>)
+legend(<span class="string">'data'</span>,<span class="string">'power law,2'</span>,<span class="string">'power law,3'</span>)
 </pre><img vspace="5" hspace="5" src="kangarooData_01.png" alt=""> <h2>Strength Distribution Predictions<a name="6"></a></h2><p>Using the hierarchy network, we generate the PA model and compare the predicted strength distributions and real distribution.</p><pre class="codeinput">Wg = genericModel(H,<span class="string">'PA'</span>);
 
 ccdf_x_g = 1:.1:max(sum(Wg,2));  <span class="comment">% the partitions of the x-axis</span>
@@ -110,23 +110,33 @@ ccdf_hist_g = cumsum(df_hist_g(end:-1:1));
 ccdf_hist_g = ccdf_hist_g(end:-1:1);  <span class="comment">% computing the cummulative degree distribution</span>
 
 
-figure
-plot(ccdf_x,ccdf_hist,<span class="string">'o'</span>)
+figure(<span class="string">'OuterPosition'</span>, [400 400 250 250])
+
+loglog(ccdf_x,ccdf_hist,<span class="string">'o'</span>)
 hold <span class="string">on</span>
-plot(ccdf_x_g,ccdf_hist_g,<span class="string">'*'</span>)
-legend(<span class="string">'Real-World Data'</span>,<span class="string">'PA predictions'</span>)
+loglog(ccdf_x_g,ccdf_hist_g,<span class="string">'*'</span>)
+legend(<span class="string">'Real-World Data'</span>,<span class="string">'PBA predictions'</span>)
+
+xlabel(<span class="string">'node strength'</span>)
+ylabel(<span class="string">'frequency'</span>)
+
+set(gcf,<span class="string">'PaperPositionMode'</span>,<span class="string">'auto'</span>); print(<span class="string">'figs/kangaroo_distribution'</span>,<span class="string">'-depsc'</span>,<span class="string">'-tiff'</span>)
 </pre><img vspace="5" hspace="5" src="kangarooData_02.png" alt=""> <h2>Edge Comparison<a name="7"></a></h2><p>In the previous section we showed the predictions of strength distributions. In this section, we compare the single weights with each other.</p><pre class="codeinput">edges = tril(W,-1);
 edgesG = tril(Wg,-1);
 
 
-figure
+
+figure(<span class="string">'OuterPosition'</span>, [400 400 250 250])
+
 plot(edges(:),edgesG(:),<span class="string">'o'</span>); lsline
-xlabel(<span class="string">'real edge weights'</span>)
-ylabel(<span class="string">'predicted edge weights'</span>)
+xlabel(<span class="string">'edge weights'</span>)
+ylabel(<span class="string">'estimate edge weights'</span>)
+
+set(gcf,<span class="string">'PaperPositionMode'</span>,<span class="string">'auto'</span>); print(<span class="string">'figs/kangaroo_regression'</span>,<span class="string">'-depsc'</span>,<span class="string">'-tiff'</span>)
 </pre><img vspace="5" hspace="5" src="kangarooData_03.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% VALIDATING THE KANGAROO DATASET (Prestige-based Attachment Model)
-% 
+% Bijan Ranjbar-Sahraei
 %
 % <<kangaroo.jpg>>
 %
@@ -179,7 +189,7 @@ semilogy(ccdf_x, ccdf_hist,'-o')
 hold on
 semilogy(ccdf_x, exp(-ccdf_x),':')  % approximation of power law
 semilogy(ccdf_x, exp(5-ccdf_x),'-.')  % approximation of power law
-legend('wolves','exponent','exponent - 5')
+legend('data','exponent','exponent - 5')
 
 
 subplot(122)
@@ -187,7 +197,7 @@ loglog(ccdf_x, ccdf_hist,'-o')
 hold on
 loglog(ccdf_x, n * ccdf_x.^(-2),':')  % approximation of power law
 loglog(ccdf_x, n * ccdf_x.^(-1),'-.')  % approximation of power law
-legend('wolves','power law,2','power law,3')
+legend('data','power law,2','power law,3')
 
 
 
@@ -202,11 +212,18 @@ ccdf_hist_g = cumsum(df_hist_g(end:-1:1));
 ccdf_hist_g = ccdf_hist_g(end:-1:1);  % computing the cummulative degree distribution
 
 
-figure
-plot(ccdf_x,ccdf_hist,'o')
+figure('OuterPosition', [400 400 250 250])
+
+loglog(ccdf_x,ccdf_hist,'o')
 hold on
-plot(ccdf_x_g,ccdf_hist_g,'*')
-legend('Real-World Data','PA predictions')
+loglog(ccdf_x_g,ccdf_hist_g,'*')
+legend('Real-World Data','PBA predictions')
+
+xlabel('node strength')
+ylabel('frequency')
+
+set(gcf,'PaperPositionMode','auto'); print('figs/kangaroo_distribution','-depsc','-tiff')
+
 
 %% Edge Comparison
 % In the previous section we showed the predictions of strength
@@ -217,11 +234,13 @@ edges = tril(W,-1);
 edgesG = tril(Wg,-1);
 
 
-figure
+
+figure('OuterPosition', [400 400 250 250])
+
 plot(edges(:),edgesG(:),'o'); lsline
-xlabel('real edge weights')
-ylabel('predicted edge weights')
+xlabel('edge weights')
+ylabel('estimate edge weights')
 
-
+set(gcf,'PaperPositionMode','auto'); print('figs/kangaroo_regression','-depsc','-tiff')
 ##### SOURCE END #####
 --></body></html>

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>VALIDATING THE US-airpot DATASET (Prestige-based Attachment Model)</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-08-31"><meta name="DC.source" content="airports.m"><style type="text/css">
+      --><title>VALIDATING THE US-airpot DATASET (Prestige-based Attachment Model)</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-09-02"><meta name="DC.source" content="airports.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,7 +66,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>VALIDATING THE US-airpot DATASET (Prestige-based Attachment Model)</h1><!--introduction--><p>Bijan Ranjbar-Sahraei</p><p><img vspace="5" hspace="5" src="air_net.jpg" alt=""> </p><p>This is the directed network of flights between US airports in 2010. Each edge represents a connection from one airport to another, and the weight of an edge shows the number of flights on that connection in the given direction, in 2010.</p><p>Source: <a href="http://konect.uni-koblenz.de/networks/opsahl-usairport">http://konect.uni-koblenz.de/networks/opsahl-usairport</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Importing Data</a></li><li><a href="#2">Preprocessing</a></li><li><a href="#5">Degree Distribution</a></li><li><a href="#6">Strength Distribution Predictions</a></li><li><a href="#8">Edge Comparison</a></li></ul></div><h2>Importing Data<a name="1"></a></h2><pre class="codeinput">clear <span class="string">all</span>
+  </style></head><body><div class="content"><h1>VALIDATING THE US-airpot DATASET (Prestige-based Attachment Model)</h1><!--introduction--><p>Bijan Ranjbar-Sahraei</p><p><img vspace="5" hspace="5" src="air_net.jpg" alt=""> </p><p>This is the directed network of flights between US airports in 2010. Each edge represents a connection from one airport to another, and the weight of an edge shows the number of flights on that connection in the given direction, in 2010.</p><p>Source: <a href="http://konect.uni-koblenz.de/networks/opsahl-usairport">http://konect.uni-koblenz.de/networks/opsahl-usairport</a></p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Importing Data</a></li><li><a href="#2">Preprocessing</a></li><li><a href="#5">Degree Distribution</a></li><li><a href="#6">Strength Distribution Predictions</a></li><li><a href="#7">Edge Comparison</a></li></ul></div><h2>Importing Data<a name="1"></a></h2><pre class="codeinput">clear <span class="string">all</span>
 load <span class="string">airport.mat</span>
 </pre><h2>Preprocessing<a name="2"></a></h2><p>Preprocessing the data to make it lower triangular and normalized.</p><pre class="codeinput">n = size(data,1);
 
@@ -126,19 +126,31 @@ ccdf_x_g = 1:.1:max(sum(Wg,2));  <span class="comment">% the partitions of the x
 df_hist_g = hist(sum(Wg,2),ccdf_x_g);
 ccdf_hist_g = cumsum(df_hist_g(end:-1:1));
 ccdf_hist_g = ccdf_hist_g(end:-1:1);  <span class="comment">% computing the cummulative degree distribution</span>
-</pre><pre class="codeinput">figure
+
+
+figure(<span class="string">'OuterPosition'</span>, [400 400 250 250])
+
 loglog(ccdf_x,ccdf_hist,<span class="string">'o'</span>)
 hold <span class="string">on</span>
 loglog(ccdf_x_g,ccdf_hist_g,<span class="string">'*'</span>)
-legend(<span class="string">'Real-World Data'</span>,<span class="string">'PA predictions'</span>)
-</pre><img vspace="5" hspace="5" src="airports_02.png" alt=""> <h2>Edge Comparison<a name="8"></a></h2><p>In the previous section we showed the predictions of strength distributions. In this section, we compare the single weights with each other.</p><pre class="codeinput">edges = tril(W,-1);
+legend(<span class="string">'Real-World Data'</span>,<span class="string">'PBA predictions'</span>)
+
+xlabel(<span class="string">'node strength'</span>)
+ylabel(<span class="string">'frequency'</span>)
+
+set(gcf,<span class="string">'PaperPositionMode'</span>,<span class="string">'auto'</span>); print(<span class="string">'figs/airport_distribution'</span>,<span class="string">'-depsc'</span>,<span class="string">'-tiff'</span>)
+</pre><img vspace="5" hspace="5" src="airports_02.png" alt=""> <h2>Edge Comparison<a name="7"></a></h2><p>In the previous section we showed the predictions of strength distributions. In this section, we compare the single weights with each other.</p><pre class="codeinput">edges = tril(W,-1);
 edgesG = tril(Wg,-1);
 
 
-figure
+
+figure(<span class="string">'OuterPosition'</span>, [400 400 250 250])
+
 plot(edges(:),edgesG(:),<span class="string">'o'</span>); lsline
-xlabel(<span class="string">'real edge weights'</span>)
-ylabel(<span class="string">'predicted edge weights'</span>)
+xlabel(<span class="string">'edge weights'</span>)
+ylabel(<span class="string">'estimate edge weights'</span>)
+
+set(gcf,<span class="string">'PaperPositionMode'</span>,<span class="string">'auto'</span>); print(<span class="string">'figs/airport_regression'</span>,<span class="string">'-depsc'</span>,<span class="string">'-tiff'</span>)
 </pre><img vspace="5" hspace="5" src="airports_03.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% VALIDATING THE US-airpot DATASET (Prestige-based Attachment Model)
@@ -237,12 +249,19 @@ df_hist_g = hist(sum(Wg,2),ccdf_x_g);
 ccdf_hist_g = cumsum(df_hist_g(end:-1:1));
 ccdf_hist_g = ccdf_hist_g(end:-1:1);  % computing the cummulative degree distribution
 
-%%   
-figure
+
+figure('OuterPosition', [400 400 250 250])
+
 loglog(ccdf_x,ccdf_hist,'o')
 hold on
 loglog(ccdf_x_g,ccdf_hist_g,'*')
-legend('Real-World Data','PA predictions')
+legend('Real-World Data','PBA predictions')
+
+xlabel('node strength')
+ylabel('frequency')
+
+set(gcf,'PaperPositionMode','auto'); print('figs/airport_distribution','-depsc','-tiff')
+
 
 %% Edge Comparison
 % In the previous section we showed the predictions of strength
@@ -253,11 +272,14 @@ edges = tril(W,-1);
 edgesG = tril(Wg,-1);
 
 
-figure
-plot(edges(:),edgesG(:),'o'); lsline
-xlabel('real edge weights')
-ylabel('predicted edge weights')
 
+figure('OuterPosition', [400 400 250 250])
+
+plot(edges(:),edgesG(:),'o'); lsline
+xlabel('edge weights')
+ylabel('estimate edge weights')
+
+set(gcf,'PaperPositionMode','auto'); print('figs/airport_regression','-depsc','-tiff')
 
 ##### SOURCE END #####
 --></body></html>
