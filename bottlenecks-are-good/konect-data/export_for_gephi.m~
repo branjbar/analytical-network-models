@@ -1,0 +1,25 @@
+function export_for_gephi(graph_name, W, size)
+%%EXPORT_TO_GEPHI exports the graph W appropriate for Gephi CSV file 
+
+%% node table
+nodeTable = fopen(strcat(graph_name,'[Nodes].csv'),'w');
+fprintf(nodeTable,'Id,Label,size\n');
+n = size(W);
+
+% write the first line as 1;2;3;...;n
+for i = 1 : n
+    fprintf(nodeTable,'%d;%d;%.2f\n',i,i,size(i));  % start with the node id
+end
+fclose(nodeTable);
+
+%% edge table
+edgeTable = fopen(strcat(graph_name,'[Edges].csv'),'w');
+fprintf(edgeTable,'Source,Target,Type,Id,Label,Weight\n');
+
+for i = 1 : n
+    for j = 1 : n
+        if W(i,j)>0
+            fprintf(edgeTable,'%d;%d;%.2f\n',i,j,size(i));  % start with the node id
+    
+            
+end
