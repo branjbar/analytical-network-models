@@ -18,14 +18,14 @@ clear all
 % This undirected network contains information about the power grid of the 
 % Western States of the United States of America. An edge represents a power 
 % supply line. A node is either a generator, a transformator or a substation.
-%load out_power_grid
+load out_power_grid
 
 
 %%
 % This undirected network contains information about the power grid of the 
 % Western States of the United States of America. An edge represents a power 
 % supply line. A node is either a generator, a transformator or a substation.
-load out_euro_road  
+% load out_euro_road  
 
 %% turn data into adjacency matrix
 
@@ -36,32 +36,30 @@ for i = 1 : size(data,1)
 end
 W = W + W';
 %% plotting the size of layers
-diam = 60;
+diam = 50;
 L = zeros(n,diam);
 L(:,1) = sum(W>0,2); 
 
 WP_old = W;
 for i = 2 : diam
-    i
     WP_old = WP_old * W;  % find every ith subordinate of every node
     WP_old = WP_old > 0;  % truncating the wights to 1
     L(:,i) = sum(WP_old,1);  % 
 end
 
-% 
+
 figure
 plot(L')
 
-%% get the slop of each node
+%% get the node size
 
-slope = [];
+node_size = [];
 for i = 1 : n
 %     b = polyfit(1:diam,L(i,:),1);
-    slope(i) = sum(L(i,:)<1000);
+    node_size(i) = sum(L(i,:)<n*.9);
 end
 
-figure; plot(slope,'*')
+figure; plot(node_size,'*')
 %% export for gephi
-node_size = slope;
-export_for_gephi('euro_road',W,node_size);
+export_for_gephi('power_grid',W,node_size);
     
