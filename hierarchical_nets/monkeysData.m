@@ -107,3 +107,22 @@ set(gcf,'PaperPositionMode','auto'); print('figs/monkeys_regression','-depsc','-
 xlabel('real edge weights')
 ylabel('predicted edge weights')
 
+%% Regression in LOGLOG Scale
+
+array1 = edges(:);
+array2 = edgesG(:);
+validdata1 = ~isnan(array1);
+validdata2 = ~isnan(array2);
+validdataBoth = validdata1 & validdata2;
+keep1 = array1(validdataBoth);
+keep2 = array2(validdataBoth); 
+
+b = polyfit(keep1, keep2, 1);
+
+figure;loglog(keep1,keep2,'o'); 
+polyline = exp(b(2)) .* keep1.^b(1);
+hold on
+loglog(keep1, polyline)
+mina = min(min(keep1(keep1>0)),min(keep2(keep2>0)));
+xlim([mina 1.0]);
+ylim([mina 1.0]);
