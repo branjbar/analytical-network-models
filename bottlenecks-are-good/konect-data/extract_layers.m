@@ -59,7 +59,11 @@ plot(L')
 
 %% get the node size
 
+<<<<<<< Updated upstream
 node_size = zeros(1,n);
+=======
+node_size = zeros(n,1);
+>>>>>>> Stashed changes
 for i = 1 : n
 %     b = polyfit(1:diam,L(i,:),1);
     node_size(i) = 0;

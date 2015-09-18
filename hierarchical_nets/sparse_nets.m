@@ -10,7 +10,7 @@ close all
 clear all
 clc
 
-n = 10; % umber of nodes
+n = 50; % umber of nodes
 
 %% Generating a full hierarchy
 % Define the Hierarchy relations by using a binary n x n matrix
@@ -39,14 +39,13 @@ legend('data','\alpha=2','\alpha=3')
 % Define the Hierarchy relations by using a binary n x n matrix
 % the element [i,j] of H is 1 if i is superior to j.
 
-for kk = 1 : 20
-    H = tril(rand(n,n)>kk/20,-1); % ASONAM model
+for kk = 1 : 19*3
+    H = tril(rand(n,n)>kk/20/3,-1); % ASONAM model
     %%
     % 
     % * ITEM1
     % * ITEM2
     % 
-    20/kk
     for i = 1 : n
         if sum(H(i,:)) == 0
             H(i,i) = 1;

@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>sparse_nets</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-09-02"><meta name="DC.source" content="sparse_nets.m"><style type="text/css">
+      --><title>sparse_nets</title><meta name="generator" content="MATLAB 8.4"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2015-09-03"><meta name="DC.source" content="sparse_nets.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -70,7 +70,7 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 clear <span class="string">all</span>
 clc
 
-n = 10; <span class="comment">% umber of nodes</span>
+n = 50; <span class="comment">% umber of nodes</span>
 </pre><h2>Generating a full hierarchy<a name="2"></a></h2><p>Define the Hierarchy relations by using a binary n x n matrix the element [i,j] of H is 1 if i is superior to j.</p><pre class="codeinput">H = tril(ones(n,n),-1); <span class="comment">% ASONAM model</span>
 H(1,1) = 1;
 W = genericModel(H);
@@ -89,10 +89,9 @@ hold <span class="string">on</span>
 loglog(ccdf_x, n * ccdf_x.^(-2),<span class="string">':'</span>)  <span class="comment">% approximation of power law</span>
 loglog(ccdf_x, n * ccdf_x.^(-1),<span class="string">'-.'</span>)  <span class="comment">% approximation of power law</span>
 legend(<span class="string">'data'</span>,<span class="string">'\alpha=2'</span>,<span class="string">'\alpha=3'</span>)
-</pre><img vspace="5" hspace="5" src="sparse_nets_01.png" alt=""> <h2>Generating a full hierarchy<a name="3"></a></h2><p>Define the Hierarchy relations by using a binary n x n matrix the element [i,j] of H is 1 if i is superior to j.</p><pre class="codeinput"><span class="keyword">for</span> kk = 1 : 20
-    H = tril(rand(n,n)&gt;kk/20,-1); <span class="comment">% ASONAM model</span>
-    20/kk
-    <span class="keyword">for</span> i = 1 : n
+</pre><img vspace="5" hspace="5" src="sparse_nets_01.png" alt=""> <h2>Generating a full hierarchy<a name="3"></a></h2><p>Define the Hierarchy relations by using a binary n x n matrix the element [i,j] of H is 1 if i is superior to j.</p><pre class="codeinput"><span class="keyword">for</span> kk = 1 : 19*3
+</pre><pre class="codeinput">    H = tril(rand(n,n)&gt;kk/20/3,-1); <span class="comment">% ASONAM model</span>
+</pre><div><ul><li>ITEM1</li><li>ITEM2</li></ul></div><pre class="codeinput">    <span class="keyword">for</span> i = 1 : n
         <span class="keyword">if</span> sum(H(i,:)) == 0
             H(i,i) = 1;
         <span class="keyword">end</span>
@@ -114,108 +113,8 @@ legend(<span class="string">'data'</span>,<span class="string">'\alpha=2'</span>
     loglog(ccdf_x, n * ccdf_x.^(-2),<span class="string">':'</span>)  <span class="comment">% approximation of power law</span>
     loglog(ccdf_x, n * ccdf_x.^(-1),<span class="string">'-.'</span>)  <span class="comment">% approximation of power law</span>
     legend(<span class="string">'data'</span>,<span class="string">'\alpha=4'</span>,<span class="string">'\alpha=3'</span>,<span class="string">'\alpha=2'</span>)
-<span class="keyword">end</span>
-</pre><pre class="codeoutput">
-ans =
-
-    20
-
-
-ans =
-
-    10
-
-
-ans =
-
-    6.6667
-
-
-ans =
-
-     5
-
-
-ans =
-
-     4
-
-
-ans =
-
-    3.3333
-
-
-ans =
-
-    2.8571
-
-
-ans =
-
-    2.5000
-
-
-ans =
-
-    2.2222
-
-
-ans =
-
-     2
-
-
-ans =
-
-    1.8182
-
-
-ans =
-
-    1.6667
-
-
-ans =
-
-    1.5385
-
-
-ans =
-
-    1.4286
-
-
-ans =
-
-    1.3333
-
-
-ans =
-
-    1.2500
-
-
-ans =
-
-    1.1765
-
-
-ans =
-
-    1.1111
-
-
-ans =
-
-    1.0526
-
-
-ans =
-
-     1
-
-</pre><img vspace="5" hspace="5" src="sparse_nets_02.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_03.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_04.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_05.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_06.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_07.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_08.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_09.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_10.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_11.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_12.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_13.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_14.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_15.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_16.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_17.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_18.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_19.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_20.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_21.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
+</pre><img vspace="5" hspace="5" src="sparse_nets_02.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_03.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_04.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_05.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_06.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_07.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_08.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_09.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_10.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_11.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_12.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_13.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_14.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_15.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_16.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_17.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_18.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_19.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_20.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_21.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_22.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_23.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_24.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_25.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_26.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_27.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_28.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_29.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_30.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_31.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_32.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_33.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_34.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_35.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_36.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_37.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_38.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_39.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_40.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_41.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_42.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_43.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_44.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_45.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_46.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_47.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_48.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_49.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_50.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_51.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_52.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_53.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_54.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_55.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_56.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_57.png" alt=""> <img vspace="5" hspace="5" src="sparse_nets_58.png" alt=""> <pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2014b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% STUDY SPARSE HIERARCHIES
 % Bijan Ranjbar-Sahraei
@@ -229,7 +128,7 @@ close all
 clear all
 clc
 
-n = 10; % umber of nodes
+n = 50; % umber of nodes
 
 %% Generating a full hierarchy
 % Define the Hierarchy relations by using a binary n x n matrix
@@ -258,9 +157,13 @@ legend('data','\alpha=2','\alpha=3')
 % Define the Hierarchy relations by using a binary n x n matrix
 % the element [i,j] of H is 1 if i is superior to j.
 
-for kk = 1 : 20
-    H = tril(rand(n,n)>kk/20,-1); % ASONAM model
-    20/kk
+for kk = 1 : 19*3
+    H = tril(rand(n,n)>kk/20/3,-1); % ASONAM model
+    %%
+    % 
+    % * ITEM1
+    % * ITEM2
+    % 
     for i = 1 : n
         if sum(H(i,:)) == 0
             H(i,i) = 1;
