@@ -41,10 +41,16 @@ L = zeros(n,diam);
 L(:,1) = sum(W>0,2); 
 
 WP_old = W;
-for i = 2 : diam
-    WP_old = WP_old * W;  % find every ith subordinate of every node
-    WP_old = WP_old > 0;  % truncating the wights to 1
-    L(:,i) = sum(WP_old,1);  % 
+S = W>0;  % all nodes which are reached so far 
+i = 2;
+while  ((n^2 - sum(sum(S)))>0) || (i > diam)
+    i
+    WP_new = (WP_old * W) > 0;  % find every ith subordinate of every node
+    L_tmp = (WP_new - S) > 0;  % let's find the nodes that are recently seen and truncate the wights to 1
+    L(:,i) = sum(L_tmp,1);
+    S = (S + WP_new) > 0;  % all nodes which are reached so far 
+    WP_old = WP_new;
+    i = i +1;
 end
 
 
@@ -53,13 +59,16 @@ plot(L')
 
 %% get the node size
 
-node_size = [];
+node_size = zeros(1,n);
 for i = 1 : n
 %     b = polyfit(1:diam,L(i,:),1);
-    node_size(i) = sum(L(i,:)<n*.9);
+    node_size(i) = 0;
+    for j = 1 : size(L,2)
+        node_size(i) = node_size(i) + 0.5^(j-1)*L(i,j);
+    end
+    node_size(i) = 1 / node_size(i) ;
 end
 
 figure; plot(node_size,'*')
 %% export for gephi
 export_for_gephi('power_grid',W,node_size);
-    
