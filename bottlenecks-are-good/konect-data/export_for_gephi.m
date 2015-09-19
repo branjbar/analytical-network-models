@@ -1,4 +1,4 @@
-function export_for_gephi(graph_name, W, node_size)
+function export_for_gephi(graph_name, W, node_size, node_label)
 %%EXPORT_TO_GEPHI exports the graph W appropriate for Gephi CSV file 
 
 %% node table
@@ -8,7 +8,7 @@ n = size(W,1);
 
 % write the first line as 1;2;3;...;n
 for i = 1 : n
-    fprintf(nodeTable,'%d,%d,%2f\n',i,i,node_size(i));  % start with the node id
+    fprintf(nodeTable,'%d,%s,%2f\n',i,node_label{i},node_size(i));  % start with the node id
 end
 fclose(nodeTable);
 
