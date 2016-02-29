@@ -109,7 +109,7 @@ colnames(dat) <- c("y", "x")
 ggplot(data=dat, aes(x=x, y=y))  +
   geom_boxplot(aes(group=x)) +
   geom_jitter(aes(group=x), color="blue", position = position_jitter(width = 0.1, height=0.1)) + 
-  labs(x="Size of Disturbances/Outputs", y="Size of Linking", title="Regular Network, N=100, degree=8") +
+  labs(x="Size of Disturbances/Outputs", y="Size of Linking", title="Regular Network, N=100, degree=4") +
   scale_x_continuous(breaks = round(seq(min(dat$x), max(dat$x), by = 1),1)) +
   scale_y_continuous(breaks = round(seq(min(dat$y), max(dat$y), by = 1),1))
   
