@@ -28,8 +28,8 @@ degs = sum(data,1);
 data = data(new_index,new_index);
 
 % Pick the top 50 airports
-data = data(1:50,1:50);
-n = 50;
+data = data(1:200,1:200);
+n = size(data,1);
 
 % Again sort them based on their traffic
 degs = sum(data,1);
@@ -87,7 +87,7 @@ legend('data','power law,2','power law,3')
 %% Strength Distribution Predictions
 % Using the hierarchy network, we generate the PA model and compare the
 % predicted strength distributions and real distribution.
-Wg = genericModel(H,'PA');
+Wg = genericModel(H,'PA');  % estimated weights with direct model
 
 ccdf_x_g = 1:.1:max(sum(Wg,2));  % the partitions of the x-axis
 df_hist_g = hist(sum(Wg,2),ccdf_x_g);
@@ -97,52 +97,12 @@ ccdf_hist_g = ccdf_hist_g(end:-1:1);  % computing the cummulative degree distrib
 
 figure('OuterPosition', [400 400 250 250])
 
-loglog(ccdf_x,ccdf_hist,'o')
+loglog(ccdf_x,ccdf_hist,'^-', 'markersize',5)
 hold on
-loglog(ccdf_x_g,ccdf_hist_g,'*')
-legend('Real-World Data','PBA predictions')
+loglog(ccdf_x_g,ccdf_hist_g,'o-', 'markersize',5)
+legend('Real-World Data','PBEM predictions')
 
 xlabel('node strength')
 ylabel('frequency')
 
 set(gcf,'PaperPositionMode','auto'); print('figs/airport_distribution','-depsc','-tiff')
-
-
-%% Edge Comparison
-% In the previous section we showed the predictions of strength
-% distributions. In this section, we compare the single weights with each
-% other.
-
-edges = tril(W,-1);
-edgesG = tril(Wg,-1);
-
-
-
-figure('OuterPosition', [400 400 250 250])
-
-plot(edges(:),edgesG(:),'o'); lsline
-xlabel('edge weights')
-ylabel('estimate edge weights')
-
-set(gcf,'PaperPositionMode','auto'); print('figs/airport_regression','-depsc','-tiff')
-
-
-%% Regression in LOGLOG Scale
-
-array1 = edges(:);
-array2 = edgesG(:);
-validdata1 = ~isnan(array1);
-validdata2 = ~isnan(array2);
-validdataBoth = validdata1 & validdata2;
-keep1 = array1(validdataBoth);
-keep2 = array2(validdataBoth); 
-
-b = polyfit(keep1, keep2, 1);
-
-figure;loglog(keep1,keep2,'o'); 
-polyline = exp(b(2)) .* keep1.^b(1);
-hold on
-loglog(keep1, polyline)
-mina = min(min(keep1(keep1>0)),min(keep2(keep2>0)));
-xlim([mina 1.0]);
-ylim([mina 1.0]);

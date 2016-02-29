@@ -46,20 +46,20 @@ ccdf_x = 1:.1:max(sum(W,2));  % the partitions of the x-axis
 df_hist = hist(sum(W,2),ccdf_x);
 ccdf_hist = cumsum(df_hist(end:-1:1));
 ccdf_hist = ccdf_hist(end:-1:1);  % computing the cummulative degree distribution
-subplot(121)
-semilogy(ccdf_x, ccdf_hist,'-o')
-hold on
-semilogy(ccdf_x, exp(-ccdf_x),':')  % approximation of power law
-semilogy(ccdf_x, exp(5-ccdf_x),'-.')  % approximation of power law
-legend('data','exponent','exponent - 5')
-
-
-subplot(122)
-loglog(ccdf_x, ccdf_hist,'-o')
-hold on
-loglog(ccdf_x, n * ccdf_x.^(-2),':')  % approximation of power law
-loglog(ccdf_x, n * ccdf_x.^(-1),'-.')  % approximation of power law
-legend('data','power law,2','power law,3')
+% subplot(121)
+% semilogy(ccdf_x, ccdf_hist,'-o')
+% hold on
+% semilogy(ccdf_x, exp(-ccdf_x),':')  % approximation of power law
+% semilogy(ccdf_x, exp(5-ccdf_x),'-.')  % approximation of power law
+% legend('data','exponent','exponent - 5')
+% 
+% 
+% subplot(122)
+% loglog(ccdf_x, ccdf_hist,'-o')
+% hold on
+% loglog(ccdf_x, n * ccdf_x.^(-2),':')  % approximation of power law
+% loglog(ccdf_x, n * ccdf_x.^(-1),'-.')  % approximation of power law
+% legend('data','power law,2','power law,3')
 
 
 
@@ -76,53 +76,12 @@ ccdf_hist_g = ccdf_hist_g(end:-1:1);  % computing the cummulative degree distrib
 
 figure('OuterPosition', [400 400 250 250])
 
-semilogy(ccdf_x,ccdf_hist,'o')
+loglog(ccdf_x,ccdf_hist,'^-', 'markersize',5)
 hold on
-semilogy(ccdf_x_g,ccdf_hist_g,'*')
-legend('Real-World Data','DBE predictions')
+loglog(ccdf_x_g,ccdf_hist_g,'o-', 'markersize',5)
+legend('Real-World Data','DBEM predictions')
 
 xlabel('node strength')
 ylabel('frequency')
 
 set(gcf,'PaperPositionMode','auto'); print('figs/monkeys_distribution','-depsc','-tiff')
-
-
-%% Edge Comparison
-% In the previous section we showed the predictions of strength
-% distributions. In this section, we compare the single weights with each
-% other.
-
-edges = tril(W,-1);
-edgesG = tril(Wg,-1);
-
-
-
-figure('OuterPosition', [400 400 250 250])
-
-plot(edges(:),edgesG(:),'o'); lsline
-xlabel('edge weights')
-ylabel('estimate edge weights')
-
-set(gcf,'PaperPositionMode','auto'); print('figs/monkeys_regression','-depsc','-tiff')
-xlabel('real edge weights')
-ylabel('predicted edge weights')
-
-%% Regression in LOGLOG Scale
-
-array1 = edges(:);
-array2 = edgesG(:);
-validdata1 = ~isnan(array1);
-validdata2 = ~isnan(array2);
-validdataBoth = validdata1 & validdata2;
-keep1 = array1(validdataBoth);
-keep2 = array2(validdataBoth); 
-
-b = polyfit(keep1, keep2, 1);
-
-figure;loglog(keep1,keep2,'o'); 
-polyline = exp(b(2)) .* keep1.^b(1);
-hold on
-loglog(keep1, polyline)
-mina = min(min(keep1(keep1>0)),min(keep2(keep2>0)));
-xlim([mina 1.0]);
-ylim([mina 1.0]);
