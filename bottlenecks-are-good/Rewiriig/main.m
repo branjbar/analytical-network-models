@@ -4,36 +4,60 @@
 %TODO: see if you can change the maxFlow for the two hubs with maximum
 %degree!
 % add Daan's folder before running code
-N = 100;
+N = 200;
 m = 2;
 n = m+1; % initial graph 
 m0 = ones(n,n) - eye(n); 
-%W = generateScaleFree( N, m0, m );
-%W = generateRegular( N, 2*m );
-W = generateSmallWorld(N,2*m,.4);
-%
-results = [1,1];
-i = 1;
-for source = 1 : N
-    for target = 1 : N
-        if ~(source == target)
-            % source = 1;
-            % target = 1;
-            % while( source == target) 
-            %    two_random_numbers = ceil(rand(1,2)*N); 
-            %    source = two_random_numbers(1);
-            %    target = two_random_numbers(2);
-            % end
-            W_di = BFS(W, source, target);
-            W_sparse_directional = sparse(W_di);
+W = generateScaleFree( N, m0, m );
+W1 = W;
+max_flow_list = [];
 
-            MaxFlow = graphmaxflow(W_sparse_directional, source, target);
-            %fprintf(fileID,'%d;%d\n', MaxFlow, ...
-             %   min(sum(W_di(source,:)), sum(W_di(:,target))));
-            results(i,:) = [floor(MaxFlow), min(sum(W_di(source,:)), sum(W_di(:,target)))];
-            i = i+1;
-        end
+% storing the best and worst networks
+best_W = zeros(N,N);
+best_flow = 100;
+worst_W = zeros(N,N);
+worst_flow = 0;
+
+% for-loop
+best_W = W1;
+worst_W = W1;
+for i = 1 : 100
+    W1 = randomize_graph_partial_und(best_W,zeros(N,N),20);
+    output = get_size_of_largest_linking(W1, 0*N/10+1, 1*N/10);
+    max_flow_list(i) = output(5);
+    fprintf('in try %d we get %d \n', i, output(5))
+    if worst_flow < output(5) 
+        worst_flow = output(5);
+        worst_W = W1;
+    end
+    if best_flow > output(5)
+        best_flow = output(5);
+        best_W = W1;
     end
 end
 
 %%
+hist(max_flow_list,100)
+%%
+fileID = fopen('best_W.csv','w');
+fprintf(fileID, 'Source,Target,Type\n');
+
+for i = 1 : N
+    for j = i+1:N
+        if best_W(i,j) == 1
+            fprintf(fileID, '%d,%d,undirected\n', i, j);
+        end
+    end
+end
+
+
+fileID = fopen('worst_W.csv','w');
+fprintf(fileID, 'Source,Target,Type\n');
+
+for i = 1 : N
+    for j = i+1:N
+        if worst_W(i,j) == 1
+            fprintf(fileID, '%d,%d,undirected\n', i, j);
+        end
+    end
+end
