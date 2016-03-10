@@ -1,0 +1,159 @@
+---
+title: "Linking & Rewiring"
+author: "Bijan Ranjbar-Sahraei"
+date: "February 25, 2016"
+output: 
+  pdf_document: 
+    fig_height: 3
+---
+```{r}
+library(ggplot2)
+```
+
+```{r}
+data.N50m2 <- read.csv(file="linking_50_2.csv") 
+data.N50m4 <- read.csv(file="linking_50_4.csv")
+data.N100m2 <- read.csv(file="linking_100_2.csv")
+data.N100m4 <- read.csv(file="linking_100_4.csv")
+
+
+data.N50m2.R <- read.csv(file="regular_50_2.csv") 
+data.N50m4.R <- read.csv(file="regular_50_4.csv")
+data.N100m2.R <- read.csv(file="regular_100_2.csv")
+data.N100m4.R <- read.csv(file="regular_100_4.csv")
+
+
+data.N50m2.SW <- read.csv(file="small_50_2.csv")
+data.N50m4.SW <- read.csv(file="small_50_4.csv")
+
+
+```
+
+# Scale Free Networks
+```{r}
+dat <- data.N50m2
+colnames(dat) <- c("y", "x")
+ggplot(data=dat, aes(x=x, y=y))  +
+  geom_boxplot(aes(group=x)) +
+  geom_jitter(aes(group=x), color="blue", position = position_jitter(width = 0.1, height=0.1)) + 
+  labs(x="Size of Disturbances/Outputs", y="Size of Linking", title="Scale Free Network, N=50, m=2") +
+  scale_x_continuous(breaks = round(seq(min(dat$x), max(dat$x), by = 1),1)) +
+  scale_y_continuous(breaks = round(seq(min(dat$y), max(dat$y), by = 1),1))
+
+
+
+dat <- data.N50m4
+colnames(dat) <- c("y", "x")
+ggplot(data=dat, aes(x=x, y=y))  +
+  geom_boxplot(aes(group=x)) +
+  geom_jitter(aes(group=x), color="blue", position = position_jitter(width = 0.1, height=0.1)) + 
+  labs(x="Size of Disturbances/Outputs", y="Size of Linking", title="Scale Free Network, N=50, m=4") +
+  scale_x_continuous(breaks = round(seq(min(dat$x), max(dat$x), by = 1),1)) +
+  scale_y_continuous(breaks = round(seq(min(dat$y), max(dat$y), by = 1),1))
+
+dat <- data.N100m2
+colnames(dat) <- c("y", "x")
+ggplot(data=dat, aes(x=x, y=y))  +
+  geom_boxplot(aes(group=x)) +
+  geom_jitter(aes(group=x), color="blue", position = position_jitter(width = 0.1, height=0.1)) + 
+  labs(x="Size of Disturbances/Outputs", y="Size of Linking", title="Scale Free Network, N=100, m=2") +
+  scale_x_continuous(breaks = round(seq(min(dat$x), max(dat$x), by = 1),1)) +
+  scale_y_continuous(breaks = round(seq(min(dat$y), max(dat$y), by = 1),1))
+  
+  
+
+dat <- data.N100m4
+colnames(dat) <- c("y", "x")
+ggplot(data=dat, aes(x=x, y=y))  +
+  geom_boxplot(aes(group=x)) +
+  geom_jitter(aes(group=x), color="blue", position = position_jitter(width = 0.1, height=0.1)) + 
+  labs(x="Size of Disturbances/Outputs", y="Size of Linking", title="Scale Free Network, N=100, m=4") +
+  scale_x_continuous(breaks = round(seq(min(dat$x), max(dat$x,dat$y), by = 1),1)) +
+  scale_y_continuous(breaks = round(seq(min(dat$y), max(dat$x,dat$y), by = 1),1))
+```
+
+# Regular Network
+
+```{r}
+dat <- data.N50m2.R[data.N50m2.R$degree==4,]
+colnames(dat) <- c("y", "x")
+ggplot(data=dat, aes(x=x, y=y))  +
+  geom_boxplot(aes(group=x)) +
+  geom_jitter(aes(group=x), color="blue", position = position_jitter(width = 0.1, height=0.1)) + 
+  labs(x="Size of Disturbances/Outputs", y="Size of Linking", title="Regular Network, N=50, degree=4") +
+  scale_x_continuous(breaks = round(seq(min(dat$x), max(dat$x), by = 1),1)) +
+  scale_y_continuous(breaks = round(seq(min(dat$y), max(dat$y), by = 1),1))
+
+ggplot(data=dat, aes(x=y))  +
+  geom_histogram() + 
+  labs(x="Size of Linking", title="Regular Network, N=50, degree=4")
+
+
+
+dat <- data.N50m4.R[data.N50m4.R$degree==8,]
+colnames(dat) <- c("y", "x")
+ggplot(data=dat, aes(x=x, y=y))  +
+  geom_boxplot(aes(group=x)) +
+  geom_jitter(aes(group=x), color="blue", position = position_jitter(width = 0.1, height=0.1)) + 
+  labs(x="Size of Disturbances/Outputs", y="Size of Linking", title="Regular Network, N=50, degree=8") +
+  scale_x_continuous(breaks = round(seq(min(dat$x), max(dat$x), by = 1),1)) +
+  scale_y_continuous(breaks = round(seq(min(dat$y), max(dat$y), by = 1),1))
+
+ggplot(data=dat, aes(x=y))  +
+  geom_histogram() + 
+  labs(x="Size of Linking", title="Regular Network, N=50, degree=8")
+
+
+dat <- data.N100m2.R[data.N100m2.R$degree==4,]
+colnames(dat) <- c("y", "x")
+ggplot(data=dat, aes(x=x, y=y))  +
+  geom_boxplot(aes(group=x)) +
+  geom_jitter(aes(group=x), color="blue", position = position_jitter(width = 0.1, height=0.1)) + 
+  labs(x="Size of Disturbances/Outputs", y="Size of Linking", title="Regular Network, N=100, degree=4") +
+  scale_x_continuous(breaks = round(seq(min(dat$x), max(dat$x), by = 1),1)) +
+  scale_y_continuous(breaks = round(seq(min(dat$y), max(dat$y), by = 1),1))
+  
+ggplot(data=dat, aes(x=y))  +
+  geom_histogram() + 
+  labs(x="Size of Linking", title="Regular Network, N=100, degree=4")
+  
+
+dat <- data.N100m4.R[data.N100m4.R$degree==8,]
+colnames(dat) <- c("y", "x")
+ggplot(data=dat, aes(x=x, y=y))  +
+  geom_boxplot(aes(group=x)) +
+  geom_jitter(aes(group=x), color="blue", position = position_jitter(width = 0.1, height=0.1)) + 
+  labs(x="Size of Disturbances/Outputs", y="Size of Linking", title="Regular Network, N=100, degree=8") +
+  scale_x_continuous(breaks = round(seq(min(dat$x), max(dat$x,dat$y), by = 1),1)) +
+  scale_y_continuous(breaks = round(seq(min(dat$y), max(dat$x,dat$y), by = 1),1))
+
+ggplot(data=dat, aes(x=y))  +
+  geom_histogram() + 
+  labs(x="Size of Linking", title="Regular Network, N=100, degree=8")
+  
+```
+
+# Small World Network
+
+```{r}
+dat <- data.N50m2.SW
+colnames(dat) <- c("y", "x")
+ggplot(data=dat, aes(x=x, y=y))  +
+  geom_boxplot(aes(group=x)) +
+  geom_jitter(aes(group=x), color="blue", position = position_jitter(width = 0.1, height=0.1)) + 
+  labs(x="Size of Disturbances/Outputs", y="Size of Linking", title="Small World Network, N=50, degree=4, Prob.= 0.4") +
+  scale_x_continuous(breaks = round(seq(min(dat$x), max(dat$x), by = 1),1)) +
+  scale_y_continuous(breaks = round(seq(min(dat$y), max(dat$y), by = 1),1))
+
+
+dat <- data.N50m4.SW
+colnames(dat) <- c("y", "x")
+ggplot(data=dat, aes(x=x, y=y))  +
+  geom_boxplot(aes(group=x)) +
+  geom_jitter(aes(group=x), color="blue", position = position_jitter(width = 0.1, height=0.1)) + 
+  labs(x="Size of Disturbances/Outputs", y="Size of Linking", title="Small World Network, N=50, degree=8, Prob.= 0.4") +
+  scale_x_continuous(breaks = round(seq(min(dat$x), max(dat$x), by = 1),1)) +
+  scale_y_continuous(breaks = round(seq(min(dat$y), max(dat$y), by = 1),1))
+
+
+```
